@@ -30,4 +30,9 @@ public class Person {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+	@Override
+	public String toString() {
+		return (String.format("[firstName: %s | lastName: %s]", firstName, lastName));
+	}
 }

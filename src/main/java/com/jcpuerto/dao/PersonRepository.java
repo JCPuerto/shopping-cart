@@ -12,4 +12,6 @@ import com.jcpuerto.entities.Person;
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 
 	List<Person> findByLastName(@Param("name") String name);
+
+	Person findByFirstName(@Param("name") String name);
 }

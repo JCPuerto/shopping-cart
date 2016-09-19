@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -25,11 +26,27 @@
 		</div>
 	
 		<div class="container">
-		
 			<div class="row">
-				Products
+				<div class="col-md-12">
+					<form:form method="post" modelAttribute="person">
+						<h4>Login please</h4>
+						<p>(Use "Juan", "Francis", "Susana" or create one using the REST api)</p>
+						<hr />
+		                <div class="form-group">
+							<label class="col-md-2 control-label" for="firstName">Name</label>
+		                    <div class="col-md-10">
+		                		<form:input path="firstName" type="text" class="form-control" />        
+		                    </div>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <div class="col-md-offset-2 col-md-10">
+		                        <input type="submit" value="Log in" class="btn btn-default" />
+		                    </div>
+		                </div>
+					</form:form>
+				</div>
 			</div>
-		
 		
 			<hr>
 			<footer>
@@ -37,9 +54,8 @@
 			</footer>
 		</div>
 	
-		<spring:url var="bootstrapJs" value="/resources/core/css/bootstrap.min.js" />
-		
-		<script src="${bootstrapJs}"></script>
+		<spring:url var="bootstrapJs" value="/resources/core/js/bootstrap.min.js" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="${bootstrapJs}"></script>
 	</body>
 </html>

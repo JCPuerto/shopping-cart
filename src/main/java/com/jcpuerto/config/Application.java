@@ -19,7 +19,7 @@ public class Application {
 
 	@Bean
 	CommandLineRunner init(PersonRepository personRepository) {
-		return (evt) -> Arrays.asList("John, Peter, Juan".split(",")).forEach(a -> {
+		return (evt) -> Arrays.asList("Juan, Francis, Susana".split(",")).forEach(a -> {
 			Person person = new Person();
 			person.setFirstName(a);
 
