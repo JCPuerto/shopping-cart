@@ -1,5 +1,5 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +28,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<form:form method="post" modelAttribute="person">
+					<form:form method="post" modelAttribute="person" role="form" cssClass="form-horizontal">
 						<h4>Login please</h4>
 						<p>(Use "Juan", "Francis", "Susana" or create one using the REST api)</p>
 						<hr />
