@@ -2,11 +2,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Products</title>
+		<title>My Cart</title>
 		<spring:url var="bootstrapCss" value="/resources/core/css/bootstrap.min.css" />
 		<spring:url var="scCss" value="/resources/core/css/sc.css" />
 		<link href="${bootstrapCss}" rel="stylesheet" />
@@ -28,7 +29,7 @@
 						<spring:url var="productsUrl" value="products">
 							<spring:param name="userId" value="${user.id}" />
 						</spring:url>
-						<li class="active"><a href="${productsUrl}">Products</a></li>
+						<li><a href="${productsUrl}">Products</a></li>
 						<spring:url var="myCartUrl" value="cart">
 							<spring:param name="userId" value="${user.id}" />
 						</spring:url>
@@ -42,7 +43,7 @@
 							</c:otherwise>
 						</c:choose>
 						
-						<li><a href="${myCartUrl}">My Cart: <kbd><span id="cart">${cartText}</span></kbd></a></li>
+						<li class="active"><a href="${myCartUrl}">My Cart: <kbd><span id="cart">${cartText}</span></kbd></a></li>
 	                </ul>
 	                <ul class="nav navbar-nav navbar-right">
 	        			<spring:url var="dbUrl" value="h2-console" />
@@ -54,29 +55,53 @@
 	    </nav>
 	    
 		<div class="container body-content">
-			<h2>Products</h2>
+			<h2>My Cart</h2>
 			<div class="row">
 				<div class="col-md-12">
-					<p>Welcome <strong>${user.firstName}</strong>, these are some products recommended for you:</p>
-					<table id="tblProducts" class="table table-striped">
-						<tr>
-							<th>Product name</th>
-							<th>Price</th>
-							<th></th>
-						</tr>
-						<c:forEach var="p" items="${products}">
-							<tr>
-								<td>${p.name}</td>
-								<td><fmt:formatNumber value="${p.price}" type="currency"/></td>
-								<td>
-									<spring:url var="addToCartUrl" value="/rest/users/${user.id}/cart" />
-									<form action="${addToCartUrl}" method="post" data-sc-productId="${p.id}">
-										<a href="#">add to cart</a>
-									</form>
-								</td>
-							</tr>
-						</c:forEach>
-					</table>
+					<c:choose>
+						<c:when test="${empty order}">
+							<spring:url var="productsUrl" value="products">
+								<spring:param name="userId" value="${user.id}" />
+							</spring:url>
+							<p><strong>${user.firstName}</strong>, your cart is empty. <a href="${productsUrl}">Ready to start shopping?</a></p>
+						</c:when>
+						<c:otherwise>
+							<p><strong>${user.firstName}</strong>, review your shopping cart:</p>
+							<table id="tblCart" class="table table-striped">
+								<thead>
+									<tr>
+										<th>Product name</th>
+										<th>Price</th>
+										<th>Quantity</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="orderItem" items="${order.orderItems}">
+										<tr id="tr${orderItem.id}">
+											<td>${orderItem.product.name}</td>
+											<td><fmt:formatNumber value="${orderItem.product.price}" type="currency"/></td>
+											<td id="qty${orderItem.id}">${orderItem.qty}</td>
+											<td>
+												<spring:url var="deletefromCartUrl" value="/rest/users/${user.id}/cart/${orderItem.id}" />
+												<form action="${deletefromCartUrl}" method="delete" data-sc-productId="${orderItem.product.id}">
+													<a href="#">delete from cart</a>
+												</form>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+								<tfoot>
+								  <tr>
+								    <td align="right"><h3>Total</h3></td>
+								    <td id="totalPrice"><h3><fmt:formatNumber value="${order.total}" type="currency"/></h3></td>
+								    <td id="totalQty"><h3>${order.totalQty}</h3></td>
+								    <td></td>
+								  </tr>
+								</tfoot>
+							</table>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		

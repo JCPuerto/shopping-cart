@@ -11,10 +11,12 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.jcpuerto.dao.PersonRepository;
 import com.jcpuerto.dao.ProductRepository;
-import com.jcpuerto.entities.Person;
+import com.jcpuerto.dao.UserRepository;
+import com.jcpuerto.entities.Order;
+import com.jcpuerto.entities.OrderItem;
 import com.jcpuerto.entities.Product;
+import com.jcpuerto.entities.User;
 
 @SpringBootApplication
 @EnableJpaRepositories("com.jcpuerto.*")
@@ -22,24 +24,17 @@ import com.jcpuerto.entities.Product;
 public class Application {
 
 	@Bean
-	CommandLineRunner init(PersonRepository personRepository, ProductRepository productRepository) {
+	CommandLineRunner init(UserRepository userRepository, ProductRepository productRepository) {
 		return (args) -> {
-			// Users
-			Arrays.asList("Juan, Francis, Susana".split(",")).forEach(p -> {
-				Person person = new Person();
-				person.setFirstName(p);
-
-				personRepository.save(person);
-			});
 
 			// Products
 			Map<String, Double> products = new HashMap<String, Double>();
-			products.put("Product A", 55.12);
-			products.put("Product B", 84d);
-			products.put("Product C", 66.20);
-			products.put("Product D", 48.50);
-			products.put("Product E", 22.50);
-			products.put("Product F", 64.99);
+			products.put("Product 1", 10.0);
+			products.put("Product 2", 20d);
+			products.put("Product 3", 30.0);
+			products.put("Product 4", 40.00);
+			products.put("Product 5", 50.00);
+			products.put("Product 6", 60.0);
 
 			products.entrySet().forEach(p -> {
 				Product product = new Product();
@@ -47,6 +42,29 @@ public class Application {
 				product.setPrice(p.getValue());
 
 				productRepository.save(product);
+			});
+
+			// Users
+			Arrays.asList("Juan, Francis, Susana".split(",")).forEach(u -> {
+				User user = new User();
+				user.setFirstName(u.trim());
+
+				// Cart for Susana
+
+				if (user.getFirstName().equals("Susana")) {
+					Order order = new Order(user);
+					user.addToOrders(order);
+
+					Product product = productRepository.findOne(2l);
+					OrderItem orderItem = new OrderItem(product);
+					order.addToOrderItems(orderItem);
+
+					product = productRepository.findOne(4l);
+					orderItem = new OrderItem(product);
+					order.addToOrderItems(orderItem);
+				}
+
+				userRepository.save(user);
 			});
 		};
 	}

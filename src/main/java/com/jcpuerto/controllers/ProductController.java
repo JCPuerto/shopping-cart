@@ -6,55 +6,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jcpuerto.dao.OrderRepository;
 import com.jcpuerto.dao.ProductRepository;
 import com.jcpuerto.dao.UserRepository;
-import com.jcpuerto.entities.Product;
 import com.jcpuerto.entities.User;
 
 @Controller
-@RequestMapping("/")
-public class HomeController {
+@RequestMapping("/products")
+public class ProductController {
 
-	private final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
 	@Autowired
 	public UserRepository userDb;
 
 	@Autowired
-	public ProductRepository productDb;
-
-	@Autowired
 	public OrderRepository orderDb;
 
+	@Autowired
+	public ProductRepository productDb;
+
 	@GetMapping()
-	public String index(Model model) {
+	public String index(@RequestParam(required = false) Long userId, Model model) {
 
-		logger.info("index(Model model)");
+		logger.info("index(Long userId, Model model)");
 
-		model.addAttribute("user", new User());
+		User user = null;
 
-		return "home";
-	}
-
-	@PostMapping()
-	public String index(@ModelAttribute User user, Model model) {
-
-		logger.info("index(User user, Model model)");
-
-		user = userDb.findByFirstName(user.getFirstName());
+		if (userId != null)
+			user = userDb.findOne(userId);
 
 		if (user != null) {
 			model.addAttribute("user", user);
 			model.addAttribute("order", orderDb.findByUserId(user.getId()));
-			model.addAttribute("product", new Product());
 			model.addAttribute("products", productDb.findAll());
+
+			return "products";
 		}
 
-		return user != null ? "products" : "home";
+		return "redirect:/";
 	}
 }

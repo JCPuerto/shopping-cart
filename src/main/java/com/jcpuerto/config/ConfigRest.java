@@ -2,15 +2,15 @@ package com.jcpuerto.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
 @Configuration
-public class ConfigRestMvc extends RepositoryRestMvcConfiguration {
+public class ConfigRest extends RepositoryRestConfigurerAdapter {
 
 	private static final String MY_BASE_URI_URI = "/rest";
 
 	@Override
-	protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
 		config.setBasePath(MY_BASE_URI_URI);
 	}
 }
