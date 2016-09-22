@@ -78,7 +78,7 @@
 								</thead>
 								<tbody>
 									<c:forEach var="orderItem" items="${order.orderItems}">
-										<tr id="tr${orderItem.id}">
+										<tr id="tr${orderItem.id}" data-sc-delete="true">
 											<td>${orderItem.product.name}</td>
 											<td><fmt:formatNumber value="${orderItem.product.price}" type="currency"/></td>
 											<td id="qty${orderItem.id}">${orderItem.qty}</td>

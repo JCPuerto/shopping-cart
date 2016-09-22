@@ -39,8 +39,6 @@ $(function () {
             data: JSON.stringify(p)
         };
         
-        console.log(p);
-    	
         $.ajax(options).done(function (data) {
         	
         	var $target = $("#cart");
@@ -48,19 +46,21 @@ $(function () {
         	$target.replaceWith($newHtml);
         	//$newHtml.effect("highlight");
         	
-        	console.log(data.orderItems);
+        	var rowCount = $("tr[id^='tr']");
         	
         	$.each(data.orderItems, function(key, orderItem) {
-        		  var $tr = $("#tr" + orderItem.id);
-        		  $tr.find("#qty" + orderItem.id).html(orderItem.qty)
-        		  console.log("orderItem.id: " + orderItem.id + " orderItem.qty: " + orderItem.qty)
-        		  if (orderItem.qty == 0) {
-        			  console.log("Deleteing " + orderItem.id)
-        			  //$form.parents('tr:first').remove();
-        		  }
-        			  	  
-        		});
-
+    		
+				var $tr = $("#tr" + orderItem.id);
+				
+				$tr.find("#qty" + orderItem.id).html(orderItem.qty);
+				
+				$tr.removeAttr("data-sc-delete");
+    		});
+        	
+        	rowCount.filter('tr[data-sc-delete]').remove();
+        	
+        	rowCount.attr("data-sc-delete", "true");
+        	
         	$("#totalQty").html('<h3>' + data.totalQty + '</h3>');
         	$("#totalPrice").html('<h3>$' + data.total.toFixed(2) + '</h3>');
         	
