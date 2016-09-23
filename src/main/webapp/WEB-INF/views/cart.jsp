@@ -26,11 +26,11 @@
 	            </div>
 	            <div class="navbar-collapse collapse">
 	                <ul class="nav navbar-nav">
-						<spring:url var="productsUrl" value="products">
+						<spring:url var="productsUrl" value="/products">
 							<spring:param name="userId" value="${user.id}" />
 						</spring:url>
 						<li><a href="${productsUrl}">Products</a></li>
-						<spring:url var="myCartUrl" value="cart">
+						<spring:url var="myCartUrl" value="/cart">
 							<spring:param name="userId" value="${user.id}" />
 						</spring:url>
 						
@@ -79,13 +79,16 @@
 								<tbody>
 									<c:forEach var="orderItem" items="${order.orderItems}">
 										<tr id="tr${orderItem.id}" data-sc-delete="true">
-											<td>${orderItem.product.name}</td>
+											<spring:url var="detailUrl" value="/products/${orderItem.product.id}">
+												<spring:param name="userId" value="${user.id}" />
+											</spring:url>
+											<td><a href="${detailUrl}">${orderItem.product.name}</a></td>
 											<td><fmt:formatNumber value="${orderItem.product.price}" type="currency"/></td>
 											<td id="qty${orderItem.id}">${orderItem.qty}</td>
 											<td>
 												<spring:url var="deletefromCartUrl" value="/rest/users/${user.id}/cart/${orderItem.id}" />
 												<form action="${deletefromCartUrl}" method="delete" data-sc-productId="${orderItem.product.id}">
-													<a href="#">delete from cart</a>
+													<a href="#" data-sc-removeFromCart>delete from cart</a>
 												</form>
 											</td>
 										</tr>
@@ -102,6 +105,8 @@
 							</table>
 						</c:otherwise>
 					</c:choose>
+					
+					| <a href="${productsUrl}">Back to products</a> |
 				</div>
 			</div>
 		

@@ -109,8 +109,6 @@ public class CartRestController {
 
 		orderItem.addQty(product, -1);
 
-		String d = "";
-
 		if (orderItem.getQty() == 0)
 			order.removeFromOrderItems(orderItem);
 		else

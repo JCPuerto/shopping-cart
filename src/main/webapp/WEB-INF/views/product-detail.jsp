@@ -1,11 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Shopping Cart</title>
+		<title>Product Detail - ${product.name}</title>
 		<spring:url var="bootstrapCss" value="/resources/core/css/bootstrap.min.css" />
 		<spring:url var="scCss" value="/resources/core/css/sc.css" />
 		<link href="${bootstrapCss}" rel="stylesheet" />
@@ -23,47 +24,51 @@
 	                <a class="navbar-brand" href="/">Shopping Cart</a>
 	            </div>
 	            <div class="navbar-collapse collapse">
+	                <ul class="nav navbar-nav">
+						<spring:url var="productsUrl" value="/products">
+							<spring:param name="userId" value="${user.id}" />
+						</spring:url>
+						<li class="active"><a href="${productsUrl}">Products</a></li>
+						<spring:url var="myCartUrl" value="/cart">
+							<spring:param name="userId" value="${user.id}" />
+						</spring:url>
+						
+						<c:choose>
+							<c:when test="${empty order.cartTextDisplay}">
+								<c:set var="cartText" value="cart is empty" />
+							</c:when>
+							<c:otherwise>
+								<c:set var="cartText" value="${order.cartTextDisplay}" />
+							</c:otherwise>
+						</c:choose>
+						
+						<li><a href="${myCartUrl}">My Cart: <kbd><span id="cart">${cartText}</span></kbd></a></li>
+	                </ul>
 	                <ul class="nav navbar-nav navbar-right">
 	        			<spring:url var="dbUrl" value="h2-console" />
 	        			<li><a href="${dbUrl}" target="_blank">DB Console</a></li>
-	        			<li><a href="/">Log in</a></li>
+	        			<li><a href="/">Log off</a></li>
 	    			</ul>
 	            </div>
 	        </div>
 	    </nav>
-
+	    
 		<div class="container body-content">
-			<h2>Log in</h2>
+			<h2>${product.name}</h2>
 			<div class="row">
-				<div class="col-md-6">
-					<form:form method="post" modelAttribute="user" role="form" cssClass="form-horizontal">
-						<h4>Use a local account to log in.</h4>
-						<spring:url var="restApiUrl" value="/rest" />
-						<mark>Use the <a href="${restApiUrl}" target="_blank">REST api</a> to create new users!</mark>
-						<hr />
-		                <div class="form-group <c:if test="${error}">has-error has-feedback</c:if>">
-							<label class="col-md-2 control-label" for="firstName">Name</label>
-		                    <div class="col-md-10">
-		                		<form:input path="firstName" type="text" class="form-control" placeHolder="'Juan', 'Francis' or 'Susan'" />
-		                		<p>"Susan" has items in the cart already</p>
-		                    </div>
-		                </div>
-		                
-		                <div class="form-group">
-		                    <div class="col-md-offset-2 col-md-10">
-		                        <input type="submit" value="Log in" class="btn btn-default" />
-		                    </div>
-		                </div>
-					</form:form>
-				</div>
-				<div class="col-md-offset-2 col-md-4">
-					<p><strong><a href="${dbUrl}" target="_blank">Accessing the database</a>:</strong></p>
-					<p><strong>JDBC URL:</strong> jdbc:h2:mem:testdb</p>
-					<p><strong>User Name:</strong> sa</p>
-					<p><strong>Password:</strong> (no password needed)</p>
+				<div class="col-md-12">
+					<p>${product.description}</p>
+					<spring:url var="addToCartUrl" value="/rest/users/${user.id}/cart" />
+					<form action="${addToCartUrl}" method="post" data-sc-productId="${product.id}">
+						<h4><mark><a href="#" data-sc-addToCart>Add to cart</a></mark></h4>
+					</form>
 				</div>
 			</div>
-		
+			
+			<br />
+			
+			| <a href="${productsUrl}">Back to products</a> |
+			
 			<hr>
 			<footer>
 				<p>&copy; JCPuerto.com 2016</p>
@@ -71,7 +76,9 @@
 		</div>
 	
 		<spring:url var="bootstrapJs" value="/resources/core/js/bootstrap.min.js" />
+		<spring:url var="shoppingCartJs" value="/resources/core/js/shopping-cart.js" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script src="${bootstrapJs}"></script>
+		<script src="${shoppingCartJs}"></script>
 	</body>
 </html>

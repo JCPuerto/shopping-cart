@@ -96,7 +96,6 @@ public class Order {
 
 	public void removeFromOrderItems(OrderItem orderItem) {
 		totalQty--;
-		String ss = "";
 		total -= orderItem.getProduct().getPrice();
 		orderItem.setOrder(this);
 		this.orderItems.remove(orderItem);

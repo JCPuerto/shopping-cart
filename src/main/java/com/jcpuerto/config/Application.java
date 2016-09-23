@@ -29,23 +29,25 @@ public class Application {
 
 			// Products
 			Map<String, Double> products = new HashMap<String, Double>();
-			products.put("Product 1", 10.0);
-			products.put("Product 2", 20d);
-			products.put("Product 3", 30.0);
-			products.put("Product 4", 40.00);
-			products.put("Product 5", 50.00);
-			products.put("Product 6", 60.0);
+			products.put("Garden item", 30.42);
+			products.put("Machinery element", 22d);
+			products.put("House tool", 40.05);
+			products.put("Car feature", 16.50);
+			products.put("Most wanted thing", 22.99);
+			products.put("Unbeliavable piece", 85.0);
 
 			products.entrySet().forEach(p -> {
 				Product product = new Product();
 				product.setName(p.getKey());
+				product.setDescription(
+						"Lorem ipsum dolor sit amet, platonem consectetuer voluptatibus vis eu, ex pri stet philosophia, aperiam perfecto mel eu. Te nec equidem maiorum, sed ea velit liber vocibus, impedit noluisse in sed.");
 				product.setPrice(p.getValue());
 
 				productRepository.save(product);
 			});
 
 			// Users
-			Arrays.asList("Juan, Francis, Susana".split(",")).forEach(u -> {
+			Arrays.asList("Juan, Francis, Susan, Marce, Narcis, Ricaaardo".split(",")).forEach(u -> {
 				User user = new User();
 				user.setFirstName(u.trim());
 

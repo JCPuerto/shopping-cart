@@ -53,6 +53,9 @@ public class HomeController {
 			model.addAttribute("order", orderDb.findByUserId(user.getId()));
 			model.addAttribute("product", new Product());
 			model.addAttribute("products", productDb.findAll());
+		} else {
+			model.addAttribute("error", true);
+			model.addAttribute("user", new User());
 		}
 
 		return user != null ? "products" : "home";

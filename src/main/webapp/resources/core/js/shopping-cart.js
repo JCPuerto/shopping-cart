@@ -46,7 +46,7 @@ $(function () {
         	$target.replaceWith($newHtml);
         	//$newHtml.effect("highlight");
         	
-        	var rowCount = $("tr[id^='tr']");
+        	var trs = $("tr[id^='tr']");
         	
         	$.each(data.orderItems, function(key, orderItem) {
     		
@@ -57,9 +57,9 @@ $(function () {
 				$tr.removeAttr("data-sc-delete");
     		});
         	
-        	rowCount.filter('tr[data-sc-delete]').remove();
+        	trs.filter('tr[data-sc-delete]').remove();
         	
-        	rowCount.attr("data-sc-delete", "true");
+        	trs.attr("data-sc-delete", "true");
         	
         	$("#totalQty").html('<h3>' + data.totalQty + '</h3>');
         	$("#totalPrice").html('<h3>$' + data.total.toFixed(2) + '</h3>');
@@ -70,6 +70,6 @@ $(function () {
         return false;
     };
     
-    $(".container").on("click", "#tblProducts a", addToCart);
-    $(".container").on("click", "#tblCart a", removeFromCart);
+    $(".container").on("click", "a[data-sc-addToCart]", addToCart);
+    $(".container").on("click", "a[data-sc-removeFromCart]", removeFromCart);
 });

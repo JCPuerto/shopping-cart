@@ -25,11 +25,11 @@
 	            </div>
 	            <div class="navbar-collapse collapse">
 	                <ul class="nav navbar-nav">
-						<spring:url var="productsUrl" value="products">
+						<spring:url var="productsUrl" value="/products">
 							<spring:param name="userId" value="${user.id}" />
 						</spring:url>
 						<li class="active"><a href="${productsUrl}">Products</a></li>
-						<spring:url var="myCartUrl" value="cart">
+						<spring:url var="myCartUrl" value="/cart">
 							<spring:param name="userId" value="${user.id}" />
 						</spring:url>
 						
@@ -66,12 +66,15 @@
 						</tr>
 						<c:forEach var="p" items="${products}">
 							<tr>
-								<td>${p.name}</td>
+								<spring:url var="detailUrl" value="/products/${p.id}">
+									<spring:param name="userId" value="${user.id}" />
+								</spring:url>
+								<td><a href="${detailUrl}">${p.name}</a></td>
 								<td><fmt:formatNumber value="${p.price}" type="currency"/></td>
 								<td>
 									<spring:url var="addToCartUrl" value="/rest/users/${user.id}/cart" />
 									<form action="${addToCartUrl}" method="post" data-sc-productId="${p.id}">
-										<a href="#">add to cart</a>
+										<mark><a href="#" data-sc-addToCart>add to cart</a></mark>
 									</form>
 								</td>
 							</tr>
