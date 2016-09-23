@@ -1,5 +1,5 @@
 # shopping-cart
-To run this project make sure you have an internet connection and that you're not using port 8080. Open a Command Window in the project location and run "gradle bootRun".
+To run this project make sure you have JDK 8, a valid (proxy?) internet connection and that you're not using port 8080. Open a Command Window in the project location and run "gradle bootRun".
 
 In a browser go to http://localhost:8080
 
