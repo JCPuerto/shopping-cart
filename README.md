@@ -3,7 +3,7 @@ To run this project make sure you have an internet connection and that you're no
 
 In a browser go to http://localhost:8080
 
-To exit, cancel the process "ctrl + c" and type "y".
+To exit, cancel the process by typing "ctrl + c" and then "y".
 
 # Tools used
 • Spring MVC
