@@ -53,7 +53,7 @@ public class Application {
 
 				// Cart for Susana
 
-				if (user.getFirstName().equals("Susana")) {
+				if (user.getFirstName().equals("Susan")) {
 					Order order = new Order(user);
 					user.addToOrders(order);
 
